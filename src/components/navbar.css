@@ -1,0 +1,29 @@
+.navbar {
+  background-color: lightgray;
+  border-radius: 13%;
+}
+
+.navbar-item {
+  font-size: 25px;
+  color: black;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 20%;
+}
+
+.active.navbar-item:hover {
+  background-color: blue;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-item:hover {
+  background-color: lavender;
+  color: black;
+  text-decoration: none;
+}
+
+.active {
+  background-color: blue;
+  color: white;
+}

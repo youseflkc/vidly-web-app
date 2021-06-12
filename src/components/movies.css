@@ -1,0 +1,21 @@
+.movies {
+  position: relative;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-left: 50%;
+  width: 100%;
+}
+
+.container-custom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: row;
+}
+
+.table {
+  font-size: 20px;
+}
+
+.sort {
+  cursor: pointer;
+}
