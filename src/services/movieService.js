@@ -1,11 +1,9 @@
 import axios from "axios";
 
-// axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 export async function getMovies() {
-  const { data: movies } = await axios.get(
-    "https://boiling-beach-59782.herokuapp.com/api/movies"
-  );
+  const { data: movies } = await axios.get("/movies");
   return movies;
 }
 
