@@ -1,8 +1,9 @@
 import axios from "axios";
-import config from "../config.json";
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 export async function registerUser(user) {
-  await axios.post(config.apiEndpoint + "/users", {
+  await axios.post("/users", {
     email: user.username,
     password: user.password,
     name: user.name,

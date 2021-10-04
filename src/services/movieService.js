@@ -1,8 +1,11 @@
 import axios from "axios";
-import config from "../config.json";
+
+// axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 export async function getMovies() {
-  const { data: movies } = await axios.get(config.apiEndpoint + "/movies");
+  const { data: movies } = await axios.get(
+    "https://boiling-beach-59782.herokuapp.com/api/movies"
+  );
   return movies;
 }
 
@@ -28,14 +31,14 @@ export async function saveMovie(movie) {
     .indexOf(id);
 
   if (i !== -1) {
-    await axios.put(config.apiEndpoint + "/movies/" + id, movie);
+    await axios.put("/movies/" + id, movie);
   } else {
-    await axios.post(config.apiEndpoint + "/movies", movie);
+    await axios.post("/movies", movie);
   }
 }
 
 export async function deleteMovie(id) {
-  await axios.delete(config.apiEndpoint + "/movies/" + id);
+  await axios.delete("/movies/" + id);
 }
 
 export async function getTotalMovies() {
