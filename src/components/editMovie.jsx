@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Form from "./form";
 import { getGenres } from "../services/genreService";
 import DropDownList from "./dropDownList";
-import { getMovie, getMovies, saveMovie } from "../services/movieService";
+import { getMovie, saveMovie } from "../services/movieService";
 import Joi from "joi-browser";
 
 class EditMovie extends Form {
@@ -18,8 +18,8 @@ class EditMovie extends Form {
   };
 
   schema = {
-    liked: Joi,
     _id: Joi,
+    __v: Joi,
     title: Joi.string().required().label("Title"),
     genre: Joi.required(),
     numberInStock: Joi.number()
@@ -58,12 +58,11 @@ class EditMovie extends Form {
 
   doSubmit = () => {
     saveMovie(this.state.data);
-    window.location = "/";
+    //window.location = "/";
   };
 
   renderDropDownList(name, label, value, options) {
     const { data, errors } = { ...this.state };
-
     return (
       <DropDownList
         name={name}
@@ -79,10 +78,10 @@ class EditMovie extends Form {
     const { data, genres } = this.state;
     return (
       <div className="container">
-        <h1>Movie Form</h1>
+        <h1 className="title">Movie Form</h1>
         <form>
           {this.renderInput("title", "Title", true)}
-          {this.renderDropDownList("genre", "Genre", data.genre.id, genres)}
+          {this.renderDropDownList("genre", "Genre", data.genre._id, genres)}
           {this.renderInput("numberInStock", "Number In Stock")}
           {this.renderInput("dailyRentalRate", "Rate")}
           {this.renderButton("Save")}

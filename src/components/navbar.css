@@ -1,29 +1,30 @@
-.navbar {
-  background-color: lightgray;
-  border-radius: 13%;
+.navbar-container {
+  background-color: lightskyblue;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 1.4rem;
 }
 
 .navbar-item {
+  color: lightslategrey;
   font-size: 25px;
-  color: black;
   padding: 10px;
-  margin: 5px;
-  border-radius: 20%;
+  margin: 15px;
 }
 
 .active.navbar-item:hover {
-  background-color: blue;
-  color: white;
   text-decoration: none;
 }
 
 .navbar-item:hover {
-  background-color: lavender;
-  color: black;
+  background-color: skyblue;
   text-decoration: none;
 }
 
 .active {
-  background-color: blue;
-  color: white;
+  color: black;
+  border-bottom: solid 2px darkblue;
 }

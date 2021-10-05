@@ -2,14 +2,20 @@ import axios from "axios";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
+let config = {
+  headers: {
+    "x-auth-token": localStorage.getItem("token"),
+  },
+};
+
 export async function getMovies() {
   const { data: movies } = await axios.get("/movies");
   return movies;
 }
 
 export async function getMovie(id) {
-  const movies = await getMovies();
-  return movies.find((m) => m._id === id);
+  const { data: movie } = await axios.get("/movies/" + id);
+  return movie;
 }
 
 export async function saveMovie(movie) {
@@ -21,18 +27,10 @@ export async function saveMovie(movie) {
     numberInStock: movie.numberInStock.toString(),
   };
 
-  const movies = await getMovies();
-  let i = movies
-    .map((m) => {
-      return m._id;
-    })
-    .indexOf(id);
+  console.log(movie);
 
-  if (i !== -1) {
-    await axios.put("/movies/" + id, movie);
-  } else {
-    await axios.post("/movies", movie);
-  }
+  if (getMovie(id)) await axios.put("/movies/" + id, movie, config);
+  else await axios.post("/movies", movie, config);
 }
 
 export async function deleteMovie(id) {

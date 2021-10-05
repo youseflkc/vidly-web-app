@@ -154,14 +154,13 @@ export default class Movies extends Component {
           onFilterGenre={this.handleFilterGenre}
         ></Genres>
         <div className="movies">
-          <input
-            type="text"
-            placeholder="Search..."
-            onKeyUp={this.handleSearch}
-          ></input>
-          <button onClick={this.handleNewMovie} className="btn btn-primary">
-            New Movie
-          </button>
+          <div className="search">
+            <input
+              type="text"
+              placeholder="Search..."
+              onKeyUp={this.handleSearch}
+            ></input>
+          </div>
           {this.renderHeader()}
           {this.renderTable()}
           <Pagination
@@ -170,6 +169,9 @@ export default class Movies extends Component {
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
           ></Pagination>
+          <button onClick={this.handleNewMovie} className="btn btn-primary create">
+            New Movie
+          </button>
         </div>
       </div>
     );

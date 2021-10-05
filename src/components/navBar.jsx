@@ -6,38 +6,42 @@ import * as auth from "../services/authService";
 
 class NavBar extends Component {
   state = {};
+
+  getUser() {
+    return auth.getCurrentUser();
+  }
+
   render() {
-    const user = auth.getCurrentUser();
+    const user = this.getUser();
+    console.log(user);
     return (
-      <div className="navbar">
-        <div className="container">
-          <NavLink className="navbar-item" to="/movies">
-            Movies
-          </NavLink>
-          <NavLink className="navbar-item" to="/customers">
-            Customers
-          </NavLink>
-          <NavLink className="navbar-item" to="/rentals">
-            Rentals
-          </NavLink>
-          {!user && (
-            <React.Fragment>
-              <NavLink className="navbar-item" to="/login">
-                Login
-              </NavLink>
-              <NavLink className="navbar-item" to="/register-form">
-                Register
-              </NavLink>
-            </React.Fragment>
-          )}
-          {user && (
-            <React.Fragment>
-              <NavLink className="navbar-item" to="/logout">
-                Logout
-              </NavLink>
-            </React.Fragment>
-          )}
-        </div>
+      <div className="navbar-container">
+        <NavLink className="navbar-item" to="/movies">
+          Movies
+        </NavLink>
+        <NavLink className="navbar-item" to="/customers">
+          Customers
+        </NavLink>
+        <NavLink className="navbar-item" to="/rentals">
+          Rentals
+        </NavLink>
+        {!user && (
+          <React.Fragment>
+            <NavLink className="navbar-item" to="/login">
+              Login
+            </NavLink>
+            <NavLink className="navbar-item" to="/register-form">
+              Register
+            </NavLink>
+          </React.Fragment>
+        )}
+        {user && (
+          <React.Fragment>
+            <NavLink className="navbar-item" to="/logout">
+              Logout
+            </NavLink>
+          </React.Fragment>
+        )}
       </div>
     );
   }

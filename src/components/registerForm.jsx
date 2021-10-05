@@ -2,7 +2,7 @@ import Joi from "joi-browser";
 import React, { Component } from "react";
 import Form from "./form";
 import * as userService from "../services/userService";
-
+import { login } from "../services/authService";
 class RegisterForm extends Form {
   state = {
     data: {
@@ -22,6 +22,8 @@ class RegisterForm extends Form {
   async doSubmit() {
     try {
       await userService.registerUser(this.state.data);
+      await login(this.state.data.username, this.state.data.password);
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
