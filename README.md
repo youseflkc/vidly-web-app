@@ -1,3 +1,7 @@
+# Vidly
+Demo web application created with react for a video rental store. Users can view a list of available movies and sort or search through them. Users can register and login to create/edit movies or delete movies. 
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
