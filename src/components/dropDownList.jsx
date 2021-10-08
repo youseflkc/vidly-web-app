@@ -13,6 +13,7 @@ const DropDownList = ({ name, label, options, error, onChange, value }) => {
         className="form-control"
         id={name}
       >
+        <option value={0}></option>
         {options.map((option) => {
           return (
             <option key={option._id} value={option._id}>

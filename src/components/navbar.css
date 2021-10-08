@@ -24,7 +24,7 @@
   text-decoration: none;
 }
 
-.active {
+.navbar-item.active {
   color: black;
   border-bottom: solid 2px darkblue;
 }

@@ -13,7 +13,6 @@ class NavBar extends Component {
 
   render() {
     const user = this.getUser();
-    console.log(user);
     return (
       <div className="navbar-container">
         <NavLink className="navbar-item" to="/movies">

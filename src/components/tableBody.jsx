@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class TableBody extends Component {
+
+
   renderCell(item, column) {
     if (column.content) {
       return column.content(item);
@@ -19,7 +21,7 @@ class TableBody extends Component {
       <tbody>
         {data.map((item) => {
           return (
-            <tr key={item._id || item.title}>
+            <tr key={item._id || item.title} className="delete-animation">
               {columns.map((column) => {
                 return (
                   <td key={column.key || column.path}>

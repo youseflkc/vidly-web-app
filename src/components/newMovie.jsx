@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Form from "./form";
 import { getGenres } from "../services/genreService";
 import DropDownList from "./dropDownList";
-import { getMovie, saveMovie } from "../services/movieService";
+import { createMovie, getMovie, saveMovie } from "../services/movieService";
 import Joi from "joi-browser";
 import { toast } from "react-toastify";
 
-class EditMovie extends Form {
+class NewMovie extends Form {
   state = {
     data: {
       title: "",
@@ -32,18 +32,11 @@ class EditMovie extends Form {
   };
 
   async componentDidMount() {
-    try {
-      let movie = await getMovie(this.props.match.params.id);
-      this.setState({ data: movie });
-      const genres = await getGenres();
-      this.setState({ genres });
-    } catch (error) {
-      window.location = "/not-found";
-    }
+    const genres = await getGenres();
+    this.setState({ genres });
   }
 
   handleGenreChange = ({ currentTarget: input }) => {
-    if (input.value == 0) return;
     let errors = this.state.errors;
     let errorMessage = this.validateProperty(input);
 
@@ -60,13 +53,11 @@ class EditMovie extends Form {
 
   doSubmit = async () => {
     try {
-      await saveMovie(this.state.data);
+      await createMovie(this.state.data);
       window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        toast.error("Error: Unauthorized access.");
-      } else if (ex.response && ex.response.status === 404) {
-        toast.error("Error: Movie does not exist.");
+        toast.error("Error: Unauthorized Access.");
       }
     }
   };
@@ -101,4 +92,4 @@ class EditMovie extends Form {
   }
 }
 
-export default EditMovie;
+export default NewMovie;

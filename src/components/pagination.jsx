@@ -11,7 +11,6 @@ export default class Pagination extends Component {
     if (numberOfPages === 1) {
       return "";
     }
-
     return pages.map((page) => {
       return (
         <li

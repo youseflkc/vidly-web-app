@@ -1,5 +1,4 @@
 import axios from "axios";
-
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 let config = {
@@ -27,14 +26,21 @@ export async function saveMovie(movie) {
     numberInStock: movie.numberInStock.toString(),
   };
 
-  console.log(movie);
+  await axios.put("/movies/" + id, movie, config);
+}
 
-  if (getMovie(id)) await axios.put("/movies/" + id, movie, config);
-  else await axios.post("/movies", movie, config);
+export async function createMovie(movie) {
+  movie = {
+    title: movie.title,
+    genreId: movie.genre._id,
+    dailyRentalRate: movie.dailyRentalRate.toString(),
+    numberInStock: movie.numberInStock.toString(),
+  };
+  await axios.post("/movies", movie, config);
 }
 
 export async function deleteMovie(id) {
-  await axios.delete("/movies/" + id);
+  return await axios.delete("/movies/" + id, config);
 }
 
 export async function getTotalMovies() {

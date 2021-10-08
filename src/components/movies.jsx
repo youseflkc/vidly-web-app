@@ -10,6 +10,7 @@ import Genres from "./genres";
 import Pagination from "./pagination";
 import MoviesTable from "./moviesTable";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 export default class Movies extends Component {
   state = {
@@ -29,30 +30,42 @@ export default class Movies extends Component {
   }
 
   handleNewMovie = () => {
-    this.props.history.push("/movies/" + Date.now());
+    this.props.history.push("/movies/new-movie");
+  };
+
+  errorMsg = () => {
+    toast.dark("error");
   };
 
   handleDelete = async (_id) => {
     const originalMovies = this.state.movies;
-    this.setState({
-      movies: await getMovies(),
-      filteredMovies: await getMovies(),
-      totalMovies: await getTotalMovies(),
-    });
-
+    let newFilteredMovies = this.state.filteredMovies;
     try {
       await deleteMovie(_id);
+      let newMovies = originalMovies.filter((m) => m._id !== _id);
+      newFilteredMovies = newFilteredMovies.filter((m) => m._id !== _id);
+      if (this.state.searchedMovies) {
+        let newSearchedMovies = this.state.searchedMovies.filter(
+          (m) => m._id !== _id
+        );
+        this.setState({ searchedMovies: newSearchedMovies });
+      }
+      this.setState({
+        filteredMovies: newFilteredMovies,
+        movies: newMovies,
+      });
     } catch (ex) {
       if (ex.response && ex.response.status === 404) {
-        console.log("movie already deleted");
+        toast.error("Error: Movie already deleted.");
         this.setState({
           movies: originalMovies,
           filteredMovies: originalMovies,
           totalMovies: originalMovies.length,
         });
+      } else if (ex.response && ex.response.status === 400) {
+        toast.error("Error: Unauthorized access.");
       }
     }
-
     if (this.state.filteredMovies.length <= this.state.pageSize) {
       this.setState({ currentPage: this.currentPage-- });
     }
@@ -72,8 +85,9 @@ export default class Movies extends Component {
   handleFilterGenre = (genre) => {
     let movies = this.state.movies;
     if (!movies) return null;
-    if (genre !== "all")
+    if (genre !== "all") {
       movies = movies.filter((movie) => movie.genre.name === genre);
+    }
     this.setState({
       filterGenre: genre,
       filteredMovies: movies,
@@ -85,23 +99,23 @@ export default class Movies extends Component {
   handleSearch = ({ target }) => {
     let search = target.value;
     let movies = this.state.movies;
-    console.log(search);
-    let searchedMovies = !search
-      ? null
-      : movies.filter((m) => m.title.toLowerCase().startsWith(search));
-    this.handleFilterGenre("all");
-    this.setState({ searchedMovies });
+    let searchedMovies = null;
+    let totalMovies = movies.length;
+    if (search) {
+      this.handleFilterGenre("all");
+      let searchedMovies = movies.filter((m) =>
+        m.title.toLowerCase().startsWith(search)
+      );
+      totalMovies = searchedMovies.length;
+      this.setState({ searchedMovies, totalMovies });
+    } else {
+      searchedMovies = null;
+      this.setState({ searchedMovies, totalMovies: movies.length });
+    }
   };
 
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
-  };
-
-  handleLike = (movie) => {
-    let movies = this.state.movies;
-    const index = movies.indexOf(movie);
-    movies[index].liked = !movies[index].liked;
-    this.setState({ movies });
   };
 
   renderHeader() {
@@ -109,9 +123,7 @@ export default class Movies extends Component {
     if (totalMovies === 0) {
       return <h1>There are no movies in the database.</h1>;
     }
-    return (
-      <h1>Showing {this.state.filteredMovies.length} movies in database.</h1>
-    );
+    return <h1>Showing {totalMovies} movies in database.</h1>;
   }
 
   renderTable() {
@@ -144,8 +156,8 @@ export default class Movies extends Component {
   }
 
   render() {
-    const { movies, pageSize, currentPage, filterGenre } = this.state;
-    const totalMovies = movies.length || 0;
+    const { filteredMovies, pageSize, currentPage, filterGenre, totalMovies } =
+      this.state;
 
     return (
       <div className="container-custom">
@@ -169,7 +181,10 @@ export default class Movies extends Component {
             currentPage={currentPage}
             onPageChange={this.handlePageChange}
           ></Pagination>
-          <button onClick={this.handleNewMovie} className="btn btn-primary create">
+          <button
+            onClick={this.handleNewMovie}
+            className="btn btn-primary create"
+          >
             New Movie
           </button>
         </div>
